@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الاستعلام عن المرتب</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700;800&display=swap">
+
+<style>
+:root {
+    --bg-gradient: linear-gradient(135deg, #ffecd2 0%, #fcb69f 50%, #ff9a9e 100%);
+    --card-bg: rgba(255, 255, 255, 0.92);
+    --primary-color: #6C5CE7;
+    --primary-gradient: linear-gradient(135deg, #a29bfe, #6c5ce7);
+    --button-gradient: linear-gradient(135deg, #ff7675, #d63031);
+    --button-hover: linear-gradient(135deg, #d63031, #e84393);
+    --text-main: #2d3436;
+    --text-muted: #636e72;
+    --net-bg: linear-gradient(135deg, #00b894, #00cec9);
+}
+
+body {
+    margin: 0;
+    font-family: 'Cairo', sans-serif;
+    direction: rtl;
+    background: var(--bg-gradient);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-main);
+}
+
+.main-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
+    border-radius: 24px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    width: 90%;
+    max-width: 550px;
+    padding: 35px 25px;
+    margin: 20px auto;
+    border: 2px solid rgba(255, 255, 255, 0.6);
+    text-align: center;
+}
+
+.logo-wrapper {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+.logo-wrapper img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 4px solid white;
+    box-shadow: 0 8px 20px rgba(108, 92, 231, 0.2);
+}
+
+h2 {
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 26px;
+    font-weight: 800;
+    margin: 10px 0 25px 0;
+}
+
+.search-box {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+input {
+    flex: 1;
+    padding: 14px 18px;
+    border-radius: 14px;
+    border: 2px solid #ffeaa7;
+    background: #fff;
+    font-size: 16px;
+    font-family: inherit;
+    outline: none;
+    transition: all 0.3s ease;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+}
+
+input:focus {
+    border-color: #6c5ce7;
+    box-shadow: 0 0 0 4px rgba(108, 92, 231, 0.15);
+}
+
+button {
+    padding: 14px 28px;
+    border: none;
+    border-radius: 14px;
+    background: var(--button-gradient);
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 18px rgba(214, 48, 49, 0.3);
+}
+
+button:hover {
+    background: var(--button-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px rgba(232, 67, 147, 0.4);
+}
+
+.result-card {
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 20px;
+    margin-top: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    text-align: right;
+    animation: popIn 0.35s ease-out;
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 8px;
+    border-bottom: 1px dashed #dfe6e9;
+}
+
+.row:last-child {
+    border-bottom: none;
+}
+
+.label {
+    color: var(--text-muted);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.value {
+    font-weight: 700;
+    color: #2d3436;
+    font-size: 15px;
+}
+
+.net-salary {
+    margin-top: 18px;
+    padding: 16px;
+    border-radius: 14px;
+    background: var(--net-bg);
+    color: white;
+    font-size: 21px;
+    text-align: center;
+    font-weight: 800;
+    box-shadow: 0 8px 20px rgba(0, 206, 201, 0.3);
+}
+
+.error {
+    color: #d63031;
+    background: #ffeaa7;
+    padding: 12px 20px;
+    border-radius: 12px;
+    display: inline-block;
+    margin-top: 15px;
+    font-weight: 700;
+}
+
+@keyframes popIn {
+    0% { opacity: 0; transform: scale(0.95); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+@media (max-width: 480px) {
+    .search-box {
+        flex-direction: column;
+    }
+    button {
+        width: 100%;
+    }
+}
+</style>
+</head>
+<body>
+
+<div class="main-card">
+    <div class="logo-wrapper">
+        <img src="logo.jpg" alt="شعار المدرسة" onerror="this.style.display='none'">
+    </div>
+
+    <h2>الاستعلام عن المرتبات</h2>
+
+    <div class="search-box">
+        <input type="text" id="insurance" placeholder="اكتب الرقم التأميني هنا...">
+        <button onclick="searchSalary()">بحث</button>
+    </div>
+
+    <div id="result"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+
+<script>
+async function searchSalary() {
+    const number = document.getElementById("insurance").value.trim();
+
+    if(number === ""){
+        document.getElementById("result").innerHTML = "<div class='error'>من فضلك أدخل الرقم التأميني</div>";
+        return;
+    }
+
+    try {
+        const response = await fetch("salaries.csv");
+        const csvData = await response.text();
+
+        const parsed = Papa.parse(csvData, {
+            header: true,
+            skipEmptyLines: true
+        });
+
+        const firstColumn = parsed.meta.fields[0];
+        const person = parsed.data.find(row => row[firstColumn] && row[firstColumn].trim() === number);
+
+        if(person){
+            let html = '<div class="result-card">';
+
+            parsed.meta.fields.forEach(field => {
+                if(field.toLowerCase().includes('صافي') || field.toLowerCase().includes('net')) {
+                    html += `<div class="net-salary">${field}: ${person[field]}</div>`;
+                } else {
+                    html += `<div class="row"><span class="label">${field}</span><span class="value">${person[field]}</span></div>`;
+                }
+            });
+
+            html += '</div>';
+            document.getElementById("result").innerHTML = html;
+        } else {
+            document.getElementById("result").innerHTML = "<div class='error'>الرقم غير موجود بالنظام</div>";
+        }
+
+    } catch (err) {
+        document.getElementById("result").innerHTML = "<div class='error'>حدث خطأ في تحميل البيانات</div>";
+        console.error(err);
+    }
+}
+</script>
+
+</body>
+</html>
